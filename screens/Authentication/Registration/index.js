@@ -10,7 +10,6 @@ export default function Registration() {
         firstName: '',
         lastName: '',
         email: '',
-        role:'',
         password1: '',
         password2: ''
     })
@@ -44,18 +43,6 @@ export default function Registration() {
           placeholder='Email Address' 
           value={data.email}
           onChangeText={text => {setData({...data,email: text})}}/>
-          
-          <TextInput
-          style={styles.input} 
-          placeholder='Address: (Barangay, Municipality/City)' 
-          value={data.barangay}
-          onChangeText={text => {setData({...data,barangay: text})}}/>
-
-          <TextInput
-          style={styles.input} 
-          placeholder='Your role as barangay worker'
-          value={data.role}
-          onChangeText={text => {setData({...data,role: text})}}/>
 
 
           <TextInput 
@@ -84,8 +71,6 @@ export default function Registration() {
                     global.firstName = data.firstName
                     global.lastName = data.lastName
                     global.email = data.email
-                    global.barangay = data.barangay
-                    global.role = data.role
                     global.password = data.password
                     global.logged_in = true
                     setData({
@@ -93,7 +78,6 @@ export default function Registration() {
                       name2: '',
                       username: '',
                       email: '',
-                      barangay: '',
                       password1: '',
                       password2: '',
                     })
@@ -110,17 +94,17 @@ export default function Registration() {
                 alert("Invalid Email")
               }
             }else{
-              if (data.firstName==''&&data.lastName!=''&&data.email!=''&&data.barangay!=''&&data.password!=''&&data.confirmPassword!=''){
+              if (data.firstName==''&&data.lastName!=''&&data.email!=''&&data.password!=''&&data.confirmPassword!=''){
                 alert("Please Input Firstname")
-              }else if (data.firstName!=''&&data.lastName==''&&data.email!=''&&data.barangay!=''&&data.password!=''&&data.confirmPassword!=''){
+              }else if (data.firstName!=''&&data.lastName==''&&data.email!=''&&data.password!=''&&data.confirmPassword!=''){
                 alert("Please Input Lastname")
-              }else if (data.firstName!=''&&data.lastName!=''&&data.email==''&&data.barangay!=''&&data.password!=''&&data.confirmPassword!=''){
+              }else if (data.firstName!=''&&data.lastName!=''&&data.email==''&&data.password!=''&&data.confirmPassword!=''){
                 alert("Please Input Valid email")
-              }else if (data.firstName!=''&&data.lastName!=''&&data.email!=''&&data.barangay!=''&&data.password==''&&data.confirmPassword!=''){
+              }else if (data.firstName!=''&&data.lastName!=''&&data.email!=''&&data.password==''&&data.confirmPassword!=''){
                 alert("Please Input Password")
-              }else if (data.firstName!=''&&data.lastName!=''&&data.email!=''&&data.barangay!=''&&data.password!=''&&data.confirmPassword==''){
+              }else if (data.firstName!=''&&data.lastName!=''&&data.email!=''&&data.password!=''&&data.confirmPassword==''){
                 alert("Please Confirm password")
-              }else if (data.firstName==''||data.lastName==''||data.email==''||data.barangay==''||data.password==''||data.confirmPassword==''){
+              }else if (data.firstName==''||data.lastName==''||data.email==''||data.password==''||data.confirmPassword==''){
                   alert("Please Input Credentials")
                 }
             }        

@@ -85,9 +85,6 @@ export default function Profile({navigation}) {
                   </TouchableOpacity>
 
                   <Text style={{color:'#4267B2', fontWeight:'bold', fontSize:20, marginLeft:20 }}>{global.firstName + " " + global.lastName}{"\n"}</Text>
-                  <Text style={{color:'#4267B2', fontWeight:'bold', fontSize:15, marginLeft:20}}>Role: {global.role} </Text>
-                  
-                  <Text style={{color:'#4267B2', fontWeight:'bold', fontSize:15, marginLeft:20}}>Address: {global.barangay} </Text>
                   <Text style={{color:'#4267B2', fontWeight:'bold', fontSize:15, marginLeft:20, marginBottom:5}}>Email Address: {global.email}</Text>
                 </View>
               
