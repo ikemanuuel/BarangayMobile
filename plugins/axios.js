@@ -1,5 +1,6 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://99ff-202-137-119-4.ap.ngrok.io/';
+axios.defaults.baseURL = 'http://192.168.73.112:8000/api/v1/';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 export default axios;

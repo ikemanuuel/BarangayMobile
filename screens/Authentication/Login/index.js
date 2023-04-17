@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { Image, Text, View, TextInput, Button, SafeAreaView, TouchableOpacity  } from 'react-native';
 import styles from "../../../Styles/styles";
+import axios from "../../../plugins/axios";
 
 
 
 export default function Login({navigation}) {
     const [data, setData] = useState({
-      email: '',
+      username: '',
       password: '',
     })
-  
+
+    
     return (
 
         <View style={styles.container}>
@@ -17,9 +19,9 @@ export default function Login({navigation}) {
 
         <TextInput
         style={styles.input} 
-        placeholder='Email Address' 
+        placeholder='Username' 
         value={data.email}
-        onChangeText={text => {setData({...data,email: text})}}/>
+        onChangeText={text => {setData({...data,username: text})}}/>
         
         <TextInput 
         secureTextEntry = {true}
@@ -33,28 +35,18 @@ export default function Login({navigation}) {
         
         onPress={() => {
 
-          if (data.email!=''&&data.password!=''){
-            if (data.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
-              if (data.email == global.email && data.password == global.password){
-                setData({
-                  email: '',
-                  password: '',
-                })
-                navigation.replace('Dashboard')
-                
-              }else{
-                alert("Invalid Credentials")
-              }
-            }else{
-              alert("Invalid Email")
-            }
-          }else if (data.email!=''&&data.password==''){
-            alert("Please Input Password")
-          }else if (data.email==''&&data.password!=''){
-            alert("Please Input Email")
-          }else{
-            alert("Please Input Credentials")
-          }
+          axios.post("accounts/token/login", data )
+                    .then((response) => {
+                      setData("");
+                      navigation.replace('Dashboard')
+                      // setSuccess(
+                      //   "Successfully Registered!\nplease check your email\n  for activation!"
+                      // );
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                      alert('error')
+                    });
         } }>
           <Text style = {styles.button_text}>Login</Text>
             </TouchableOpacity>
