@@ -4,9 +4,9 @@ import styles from '../../../Styles/styles';
 import { useSelector } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 
-export default function Profile({navigation}) {
+export default function Profile() {
   const formData = useSelector(state => state.formData);
-  const nav =useNavigation();
+  const nav = useNavigation();
 
   return (
     <View style={{width:'100%', height: '100%',marginTop:30}}>
@@ -54,7 +54,6 @@ export default function Profile({navigation}) {
             <Image style={styles.tiny_logo} source={require('../../../img/profact.png')} />
             </TouchableOpacity>
          </View>
-
        
             <View  style={{ width: '100%', height: '35%', backgroundColor: '#e6ebff',  }}>
                 <TouchableOpacity style = {{borderWidth: 1, 
@@ -84,7 +83,7 @@ export default function Profile({navigation}) {
                     <Text style={{alignSelf:'center', fontWeight:'bold', fontSize:70, color:'#4267B2'}}>{global.firstName.substring(0, 1)}</Text>
                   </TouchableOpacity>
 
-                  <Text style={{color:'#4267B2', fontWeight:'bold', fontSize:20, marginLeft:20 }}>{global.firstName + " " + global.lastName}{"\n"}</Text>
+                  <Text style={{color:'#4267B2', fontWeight:'bold', fontSize:20, marginLeft:20 }}>{global.first_name + " " + global.last_name}{"\n"}</Text>
                   <Text style={{color:'#4267B2', fontWeight:'bold', fontSize:15, marginLeft:20, marginBottom:5}}>Email Address: {global.email}</Text>
                 </View>
               
@@ -126,12 +125,12 @@ export default function Profile({navigation}) {
 
                 <TouchableOpacity style={styles.table_ni2}>
                 
-                    <Text style={styles.tableCellText}>{item.lastName}</Text>
+                    <Text style={styles.tableCellText}>{item.last_name}</Text>
                 </TouchableOpacity>
                 
                     <TouchableOpacity style={styles.table_ni1}>
                 
-                    <Text style={styles.tableCellText}>{item.firstName}</Text>
+                    <Text style={styles.tableCellText}>{item.first_name}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.table_ni2}>

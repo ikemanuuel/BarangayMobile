@@ -45,7 +45,7 @@ export default function Login({navigation}) {
                     })
                     .catch((error) => {
                       console.log(error);
-                      alert('error')
+                      alert('Invalid Credentials!\nor your account may not be activated\nplease check your email for activation')
                     });
         } }>
           <Text style = {styles.button_text}>Login</Text>
