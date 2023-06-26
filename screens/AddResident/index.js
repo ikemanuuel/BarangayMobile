@@ -1,90 +1,122 @@
 import React, { useState } from 'react';
-import { View, TextInput, Image, TouchableOpacity, Text, ScrollView, SafeAreaView } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, ScrollView, SafeAreaView, Image } from 'react-native';
 import { useDispatch } from 'react-redux';
-import styles from '../../Styles/styles';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+
+import styles from '../../Styles/styles';
 
 const Form = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [houseHold, setHouseHold] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [middleName, setMiddleName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [birthDate, setBirthDate] = useState('');
-  const [birthPlace, setBirthPlace] = useState('');
-  const [age, setAge] = useState('');
-  const [Email, setEmail] = useState('');
-  const [Phone, setPhone] = useState('');
-  const [Zone, setZone] = useState('');
-  const [civilStatus, setCivilStatus] = useState('');
-  const [gender, setGender] = useState('');
-  const [GovernmentProg, setGovernmentProg] = useState('');
-  const [bloodType, setBloodType] = useState('');
-  const [religion, setReligion]=useState('');
-  const [educ, setEduc]=useState('');
-  const [totalH, setTotalH]=useState('');
-  const [occupation, setOccupation]=useState('');
-  const [nationality, setNationality]=useState('');
-
-
+  const [householdno, sethouseholdno] = useState('');
+  const [firstname, setfirstname] = useState('');
+  const [middlename, setmiddlename] = useState('');
+  const [lastname, setlastname] = useState('');
+  const [birthdate, setbirthdate] = useState('');
+  const [birthplace, setbirthplace] = useState('');
+  const [age, setage] = useState('');
+  const [civilstatus, setcivilstatus] = useState('');
+  const [gender, setgender] = useState('');
+  const [bloodtype, setbloodtype] = useState('');
+  const [religion, setreligion] = useState('');
+  const [educationalattainment, seteducationalattainment] = useState('');
+  const [totalhouseholdmember, settotalhouseholdmember] = useState('');
+  const [occupation, setoccupation] = useState('');
+  const [nationality, setnationality] = useState('');
 
   const handleSubmit = () => {
- if (houseHold!=''&&firstName!=''&&lastName!=''&&middleName!=''&&gender!=''&&birthDate!=''&&birthPlace!=''&&civilStatus!=''&&age!=''){
-    dispatch({
-      type: 'ADD_FORM_DATA',
-      payload: {
-        houseHold,
-        firstName,
-        middleName,
-        lastName,
-        birthDate,
-        birthPlace,
+    if (
+      householdno !== '' &&
+      firstname !== '' &&
+      lastname !== '' &&
+      middlename !== '' &&
+      gender !== '' &&
+      birthdate !== '' &&
+      birthplace !== '' &&
+      civilstatus !== '' &&
+      age !== '' &&
+      bloodtype !== '' &&
+      religion !== '' &&
+      educationalattainment !== '' &&
+      totalhouseholdmember !== '' &&
+      occupation !== '' &&
+      nationality !== ''
+    ) {
+      const residentInfo = {
+        householdno,
+        firstname,
+        middlename,
+        lastname,
+        birthdate,
+        birthplace,
         age,
-        Email,
-        Phone,
-        Zone,
         gender,
-        civilStatus,
-  bloodType,
+        civilstatus,
+        bloodtype,
         religion,
-        educ,
-        totalH,
         occupation,
         nationality,
-      },
-      
-    });
-    setHouseHold('');
-    setFirstName('');
-    setMiddleName('');
-    setLastName('');
-    setBirthDate('');
-    setBirthPlace('');
-    setAge('');
-    setEmail('');
-    setPhone('');
-    setZone('');
-    setGender('');
-    setCivilStatus ('');
+        educationalattainment,
+        totalhouseholdmember,
+      };
 
-    setBloodType('');
-    setReligion('');
-    setEduc('');
-    setTotalH('');
-    setOccupation('');
-    setNationality('');
-    alert('Submitted')
-   }
-    else{
-      alert('Please Complete the Form')
-  }
+      axios
+        .post('http://192.168.1.4:8000/api/v1/residents/residents/', residentInfo)
+        .then(response => {
+          
+          sethouseholdno('');
+          setfirstname('');
+          setmiddlename('');
+          setlastname('');
+          setbirthdate('');
+          setbirthplace('');
+          setage('');
+          setgender('');
+          setcivilstatus('');
+          setbloodtype('');
+          setreligion('');
+          setoccupation('');
+          setnationality('');
+          seteducationalattainment('');
+          settotalhouseholdmember('');
+          alert('Submitted');
+        })
+        .catch(error => {
+          console.log('Error submitting form:', error);
+        });
+    } else {
+      alert('Please complete the form');
+    }
   };
-    //inputtext style when active
-  const [focused, setFocused] = useState({houseHold: false, firstName: false, middleName:false, lastName: 
-    false, age: false, birthDate:false, birthPlace:false, Email:false, Phone:false, Zone:false, gender:false, 
-    civilStatus:false, gender: false,  bloodType: false, religion:false,educ: false,totalH: false,occupation:false,nationality:false,});
 
+  const handleTextInputFocus = fieldName => {
+    setFocused(prevState => ({ ...prevState, [fieldName]: true }));
+  };
+
+  const handleTextInputBlur = fieldName => {
+    setFocused(prevState => ({ ...prevState, [fieldName]: false }));
+  };
+
+  
+
+  const [focused, setFocused] = useState({
+    householdno: false,
+    firstname: false,
+    middlename: false,
+    lastname: false,
+    age: false,
+    birthdate: false,
+    birthplace: false,
+    civilstatus: false,
+    gender: false,
+    bloodtype: false,
+    religion: false,
+    educationalattainment: false,
+    totalhouseholdmember: false,
+    occupation: false,
+    nationality: false,
+  });
     return (
     <SafeAreaView style={styles.form_container}>
        <TouchableOpacity style = {styles.top_ni}>
@@ -101,7 +133,7 @@ const Form = () => {
             </TouchableOpacity>
 
             <TouchableOpacity   onPress={() => {
-                navigation.navigate('Household');
+                navigation.navigate('householdno');
             }}>
             <Image style={styles.tiny_logo} source={require('../../img/housenot.png')} />
             </TouchableOpacity>
@@ -138,182 +170,184 @@ const Form = () => {
     }}>
 
     <View style={styles.container3}>
-    <Text> Household No.:</Text>
+    <Text>householdno :</Text>
     <TextInput 
-    value={houseHold}
-    onChangeText={text => setHouseHold(text)}
-    style={focused.houseHold ? styles.textInputFocused : styles.textInput}
-    onFocus={() => setFocused({houseHold: true, firstName: false, middleName:false, lastName: 
-      false, age: false, birthDate:false, Email:false, Phone:false, Zone:false,  civilStatus:false, gender: false})}
-    onBlur={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-      false, age: false, birthDate:false, birthPlace:false, Email:false, Phone:false, Zone:false, 
-      civilStatus:false, gender: false,  bloodType: false, religion:false,educ: false,totalH: false,occupation:false,nationality:false,})}
+    value={householdno}
+    onChangeText={text => sethouseholdno(text)}
+    style={focused.householdno ? styles.textInputFocused : styles.textInput}
+    onFocus={() => setFocused({householdno: true, firstname: false, middlename:false, lastname: 
+      false, age: false, birthdate:false,   civilstatus:false, gender: false})}
+    onBlur={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+      false, age: false, birthdate:false, birthplace:false,  
+      civilstatus:false, gender: false,  bloodtype: false, religion:false, educationalattainment: false,totalhouseholdmember: false,occupation:false,nationality:false,})}
     />
 
     <Text> First Name:</Text>
     <TextInput 
-    value={firstName}
-    onChangeText={text => setFirstName(text)}
-    style={focused.firstName ? styles.textInputFocused : styles.textInput}
-    onFocus={() => setFocused({houseHold: false, firstName: true, middleName:false, lastName: 
-      false, age: false, birthDate:false, Email:false, Phone:false, Zone:false, gender:false, civilStatus:false, })}
-      onBlur={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-        false, age: false, birthDate:false, birthPlace:false, Email:false, Phone:false, Zone:false, 
-        civilStatus:false, gender: false,  bloodType: false, religion:false,educ: false,totalH: false,occupation:false,nationality:false,})}
+    value={firstname}
+    onChangeText={text => setfirstname(text)}
+    style={focused.firstname ? styles.textInputFocused : styles.textInput}
+    onFocus={() => setFocused({householdno: false, firstname: true, middlename:false, lastname: 
+      false, age: false, birthdate:false,  gender:false, civilstatus:false, })}
+      onBlur={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+        false, age: false, birthdate:false, birthplace:false,  
+        civilstatus:false, gender: false,  bloodtype: false, religion:false,educationalattainment: false,totalhouseholdmember: false,occupation:false,nationality:false,})}
       />
     
     <Text> Middle Name:</Text>
     <TextInput 
-      value={middleName}
-    onChangeText={text => setMiddleName(text)}
-    style={focused.middleName ? styles.textInputFocused : styles.textInput}
-    onFocus={() => setFocused({houseHold: false, firstName: false, middleName:true, lastName: 
-      false, age: false, birthDate:false, Email:false, Phone:false, Zone:false, gender:false, civilStatus:false, })}
-      onBlur={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-        false, age: false, birthDate:false, birthPlace:false, Email:false, Phone:false, Zone:false, 
-        civilStatus:false, gender: false,  bloodType: false, religion:false,educ: false,totalH: false,occupation:false,nationality:false,})}
+      value={middlename}
+    onChangeText={text => setmiddlename(text)}
+    style={focused.middlename ? styles.textInputFocused : styles.textInput}
+    onFocus={() => setFocused({householdno: false, firstname: false, middlename:true, lastname: 
+      false, age: false, birthdate:false, gender:false, civilstatus:false, })}
+      onBlur={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+        false, age: false, birthdate:false, birthplace:false, 
+        civilstatus:false, gender: false,  bloodtype: false, religion:false,educationalattainment: false,totalhouseholdmember: false,occupation:false,nationality:false,})}
       />
 
     <Text> Last Name:</Text>
     <TextInput 
-    value={lastName}
-    onChangeText={text => setLastName(text)}
-    style={focused.lastName ? styles.textInputFocused : styles.textInput}
-    onFocus={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-      true, age: false, birthDate:false, Email:false, Phone:false, Zone:false, gender:false, civilStatus:false, })}
-      onBlur={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-        false, age: false, birthDate:false, birthPlace:false, Email:false, Phone:false, Zone:false, 
-        civilStatus:false, gender: false,  bloodType: false, religion:false,educ: false,totalH: false,occupation:false,nationality:false,})}
+    value={lastname}
+    onChangeText={text => setlastname(text)}
+    style={focused.lastname ? styles.textInputFocused : styles.textInput}
+    onFocus={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+      true, age: false, birthdate:false,  civilstatus:false, })}
+      onBlur={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+        false, age: false, birthdate:false, birthplace:false,  
+        civilstatus:false, gender: false,  bloodtype: false, religion:false,educationalattainment: false,totalhouseholdmember: false,occupation:false,nationality:false,})}
       />
-    <Text> Birthdate:</Text>
-    <TextInput 
-    value={birthDate}
-    onChangeText={text => setBirthDate(text)}
-    style={focused.birthDate ? styles.textInputFocused : styles.textInput}
-    onFocus={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-      false, age: false, birthDate:true, Email:false, Phone:false, Zone:false,  civilStatus:false, })}
-      onBlur={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-        false, age: false, birthDate:false, birthPlace:false, Email:false, Phone:false, Zone:false, 
-        civilStatus:false, gender: false,  bloodType: false, religion:false,educ: false,totalH: false,occupation:false,nationality:false,})}
-      />
+    <Text> birthdate:</Text>
+      <TextInput
+        value={birthdate}
+        onChangeText={text => setbirthdate(text)}
+        style={styles.textInput}
+        onFocus={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+          false, age: false, birthdate:true,   civilstatus:false, })}
+          onBlur={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+            false, age: false, birthdate:false, birthplace:false, 
+            civilstatus:false, gender: false,  bloodtype: false, religion:false,educationalattainment: false,totalhouseholdmember: false,occupation:false,nationality:false,})}
+          />
+      
+    
 
-    <Text> Birthplace:</Text>
+    <Text> birthplace:</Text>
     <TextInput 
-    value={birthPlace}
-    onChangeText={text => setBirthPlace(text)}
-    style={focused.birthPlace ? styles.textInputFocused : styles.textInput}
-    onFocus={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-      false, age: false, birthDate:false, birthPlace:true, Email:false, Phone:false, Zone:false, civilStatus:false, gender: false})}
-      onBlur={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-        false, age: false, birthDate:false, birthPlace:false, Email:false, Phone:false, Zone:false, 
-        civilStatus:false, gender: false,  bloodType: false, religion:false,educ: false,totalH: false,occupation:false,nationality:false,})}
+    value={birthplace}
+    onChangeText={text => setbirthplace(text)}
+    style={focused.birthplace ? styles.textInputFocused : styles.textInput}
+    onFocus={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+      false, age: false, birthdate:false, birthplace:true,  civilstatus:false, gender: false})}
+      onBlur={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+        false, age: false, birthdate:false, birthplace:false,  
+        civilstatus:false, gender: false,  bloodtype: false, religion:false,educationalattainment: false,totalhouseholdmember: false,occupation:false,nationality:false,})}
       />
     <Text> Age:</Text>
     <TextInput 
     value={age}
-    onChangeText={text => setAge(text)}
+    onChangeText={text => setage(text)}
     style={focused.age ? styles.textInputFocused : styles.textInput}
-    onFocus={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-      false, age: true, birthDate:false, Email:false, Phone:false, Zone:false,  civilStatus:false, gender: false})}
-      onBlur={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-        false, age: false, birthDate:false, birthPlace:false, Email:false, Phone:false, Zone:false, 
-        civilStatus:false, gender: false,  bloodType: false, religion:false,educ: false,totalH: false,occupation:false,nationality:false,})}
+    onFocus={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+      false, age: true, birthdate:false,   civilstatus:false, gender: false})}
+      onBlur={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+        false, age: false, birthdate:false, birthplace:false,  
+        civilstatus:false, gender: false,  bloodtype: false, religion:false,educationalattainment: false,totalhouseholdmember: false,occupation:false,nationality:false,})}
       />
     <Text> Gender:</Text>
     <TextInput 
     value={gender}
-    onChangeText={text => setGender(text)}
+    onChangeText={text => setgender(text)}
     style={focused.gender ? styles.textInputFocused : styles.textInput}
-    onFocus={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-      false, age: false, birthDate:false, Email:false, Phone:false, Zone:false,  civilStatus:false, gender:true})}
-      onBlur={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-        false, age: false, birthDate:false, birthPlace:false, Email:false, Phone:false, Zone:false, 
-        civilStatus:false, gender: false,  bloodType: false, religion:false,educ: false,totalH: false,occupation:false,nationality:false,})}
+    onFocus={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+      false, age: false, birthdate:false,   civilstatus:false, gender:true})}
+      onBlur={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+        false, age: false, birthdate:false, birthplace:false,  
+        civilstatus:false, gender: false,  bloodtype: false, religion:false,educationalattainment: false,totalhouseholdmember: false,occupation:false,nationality:false,})}
       />
 
     <Text> Civil Status:</Text>
     <TextInput 
-    value={civilStatus}
-    onChangeText={text => setCivilStatus(text)}
-    style={focused.civilStatus ? styles.textInputFocused : styles.textInput}
-    onFocus={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-      false, age: false, birthDate:false, Email:false, Phone:false, Zone:false,  civilStatus:true, gender:false})}
-      onBlur={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-        false, age: false, birthDate:false, birthPlace:false, Email:false, Phone:false, Zone:false, 
-        civilStatus:false, gender: false,  bloodType: false, religion:false,educ: false,totalH: false,occupation:false,nationality:false,})}
+    value={civilstatus}
+    onChangeText={text => setcivilstatus(text)}
+    style={focused.civilstatus ? styles.textInputFocused : styles.textInput}
+    onFocus={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+      false, age: false, birthdate:false,   civilstatus:true, gender:false})}
+      onBlur={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+        false, age: false, birthdate:false, birthplace:false,  
+        civilstatus:false, gender: false,  bloodtype: false, religion:false,educationalattainment: false,totalhouseholdmember: false,occupation:false,nationality:false,})}
       />
 
     <Text> Blood Type:</Text>
     <TextInput 
-    value={bloodType}
-    onChangeText={text => setBloodType(text)}
-    style={focused.bloodType ? styles.textInputFocused : styles.textInput}
-    onFocus={() => setFocused({bloodType: true, houseHold: false, firstName: false, middleName:false, lastName: 
-      false, age: false, birthDate:false, Email:false, Phone:false, Zone:false, civilStatus:false, gender: false})}
-      onBlur={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-        false, age: false, birthDate:false, birthPlace:false, Email:false, Phone:false, Zone:false, gender:false, 
-        civilStatus:false,   bloodType: false, religion:false,educ: false,totalH: false,occupation:false,nationality:false,})}
+    value={bloodtype}
+    onChangeText={text => setbloodtype(text)}
+    style={focused.bloodtype ? styles.textInputFocused : styles.textInput}
+    onFocus={() => setFocused({bloodtype: true,householdno: false, firstname: false, middlename:false, lastname: 
+      false, age: false, birthdate:false,  civilstatus:false, gender: false})}
+      onBlur={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+        false, age: false, birthdate:false, birthplace:false, gender:false, 
+        civilstatus:false,   bloodtype: false, religion:false,educationalattainment: false,totalhouseholdmember: false,occupation:false,nationality:false,})}
       />
 
     <Text> Religion:</Text>
     <TextInput 
     value={religion}
-    onChangeText={text => setReligion(text)}
+    onChangeText={text => setreligion(text)}
     style={focused.religion ? styles.textInputFocused : styles.textInput}
-    onFocus={() => setFocused({religion:true, bloodType: false, houseHold: false, firstName: false, middleName:false, lastName: 
-      false, age: false, birthDate:false, Email:false, Phone:false, Zone:false, gender:false, civilStatus:false, })}
-      onBlur={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-        false, age: false, birthDate:false, birthPlace:false, Email:false, Phone:false, Zone:false,  
-        civilStatus:false, gender: false,  bloodType: false, religion:false,educ: false,totalH: false,occupation:false,nationality:false,})}
+    onFocus={() => setFocused({religion:true, bloodtype: false,householdno: false, firstname: false, middlename:false, lastname: 
+      false, age: false, birthdate:false, gender:false, civilstatus:false, })}
+      onBlur={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+        false, age: false, birthdate:false, birthplace:false,  
+        civilstatus:false, gender: false,  bloodtype: false, religion:false,educationalattainment: false,totalhouseholdmember: false,occupation:false,nationality:false,})}
       />
 
-    <Text> Total Household Member:</Text>
+    <Text> Totalhousehold Member:</Text>
     <TextInput 
-    value={totalH}
-    onChangeText={text => setTotalH(text)}
-    style={focused.totalH ? styles.textInputFocused : styles.textInput}
-    onFocus={() => setFocused({totalH: true, religion:false, bloodType: false, houseHold: false, firstName: false, middleName:false, lastName: 
-      false, age: false, birthDate:false, Email:false, Phone:false, Zone:false,  civilStatus:false, gender: false})}
-      onBlur={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-        false, age: false, birthDate:false, birthPlace:false, Email:false, Phone:false, Zone:false, 
-        civilStatus:false, gender: false,  bloodType: false, religion:false,educ: false,totalH: false,occupation:false,nationality:false,})}
+    value={totalhouseholdmember}
+    onChangeText={text => settotalhouseholdmember(text)}
+    style={focused.totalhouseholdmember ? styles.textInputFocused : styles.textInput}
+    onFocus={() => setFocused({totalhouseholdmember: true, religion:false, bloodtype: false,householdno: false, firstname: false, middlename:false, lastname: 
+      false, age: false, birthdate:false,  civilstatus:false, gender: false})}
+      onBlur={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+        false, age: false, birthdate:false, birthplace:false, 
+        civilstatus:false, gender: false,  bloodtype: false, religion:false,educationalattainment: false,totalhouseholdmember: false,occupation:false,nationality:false,})}
       />
 
     <Text> Occupation:</Text>
     <TextInput 
     value={occupation}
-    onChangeText={text => setOccupation(text)}
+    onChangeText={text => setoccupation(text)}
     style={focused.occupation ? styles.textInputFocused : styles.textInput}
-    onFocus={() => setFocused({occupation: true, totalH: false, religion:false, bloodType: false, houseHold: false, firstName: false, middleName:false, lastName: 
-      false, age: false, birthDate:false, Email:false, Phone:false, Zone:false, gender:false, civilStatus:false, nationality:false })}
-      onBlur={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-        false, age: false, birthDate:false, birthPlace:false, Email:false, Phone:false, Zone:false, 
-        civilStatus:false, gender: false,  bloodType: false, religion:false,educ: false,totalH: false,occupation:false,nationality:false,})}
+    onFocus={() => setFocused({occupation: true, totalhouseholdmember: false, religion:false, bloodtype: false,householdno: false, firstname: false, middlename:false, lastname: 
+      false, age: false, birthdate:false, gender:false, civilstatus:false, nationality:false })}
+      onBlur={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+        false, age: false, birthdate:false, birthplace:false, 
+        civilstatus:false, gender: false,  bloodtype: false, religion:false,educationalattainment: false,totalhouseholdmember: false,occupation:false,nationality:false,})}
       />
 
     <Text> Nationality:</Text>
     <TextInput 
     value={nationality}
-    onChangeText={text => setNationality(text)}
+    onChangeText={text => setnationality(text)}
     style={focused.nationality ? styles.textInputFocused : styles.textInput}
-    onFocus={() => setFocused({nationality: true, occupation: false, totalH: false, religion:false, bloodType: false, houseHold: false, firstName: false, middleName:false, lastName: 
-      false, age: false, birthDate:false, Email:false, Phone:false, Zone:false, gender:false, civilStatus:false, })}
-    onBlur={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-      false, age: false, birthDate:false, birthPlace:false, Email:false, Phone:false, Zone:false, 
-      civilStatus:false, gender: false,  bloodType: false, religion:false,educ: false,totalH: false,occupation:false,nationality:false,})}
+    onFocus={() => setFocused({nationality: true, occupation: false, totalhouseholdmember: false, religion:false, bloodtype: false,householdno: false, firstname: false, middlename:false, lastname: 
+      false, age: false, birthdate:false, gender:false, civilstatus:false, })}
+    onBlur={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+      false, age: false, birthdate:false, birthplace:false, 
+      civilstatus:false, gender: false,  bloodtype: false, religion:false,educationalattainment: false,totalhouseholdmember: false,occupation:false,nationality:false,})}
     />  
 
 
     <Text> Educational Attainment:</Text>
     <TextInput 
-    value={educ}
-    onChangeText={text => setEduc(text)}
-    style={focused.educ ? styles.textInputFocused : styles.textInput}
-    onFocus={() => setFocused({nationality: false, occupation: false, totalH: false, religion:false, bloodType: false, houseHold: false, firstName: false, middleName:false, lastName: 
-      false, age: false, birthDate:false, Email:false, Phone:false, Zone:false, gender:false, civilStatus:false, educ:true })}
-    onBlur={() => setFocused({houseHold: false, firstName: false, middleName:false, lastName: 
-      false, age: false, birthDate:false, birthPlace:false, Email:false, Phone:false, Zone:false, 
-      civilStatus:false, gender: false,  bloodType: false, religion:false,educ: false,totalH: false,occupation:false,nationality:false,})}
+    value={educationalattainment}
+    onChangeText={text => seteducationalattainment(text)}
+    style={focused.educationalattainment ? styles.textInputFocused : styles.textInput}
+    onFocus={() => setFocused({nationality: false, occupation: false, totalhouseholdmember: false, religion:false, bloodtype: false,householdno: false, firstname: false, middlename:false, lastname: 
+      false, age: false, birthdate:false, gender:false, civilstatus:false, educationalattainment:true })}
+    onBlur={() => setFocused({householdno: false, firstname: false, middlename:false, lastname: 
+      false, age: false, birthdate:false, birthplace:false, 
+      civilstatus:false, gender: false,  bloodtype: false, religion:false,educationalattainment: false,totalhouseholdmember: false,occupation:false,nationality:false,})}
     />  
 
         <Text></Text>
@@ -327,6 +361,7 @@ const Form = () => {
     </ScrollView>
     </SafeAreaView>
     );
-    };
+};
+
     
     export default Form;

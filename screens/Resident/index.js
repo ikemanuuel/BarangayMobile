@@ -3,16 +3,39 @@ import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, Image, TextInpu
 import { useSelector } from 'react-redux';
 import styles from '../../Styles/styles';
 import { useNavigation } from '@react-navigation/native';
-
-import { useState } from 'react';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 
 
 const Table = () => {
   const formData = useSelector(state => state.formData);
   const navigation = useNavigation();
-  const [data, setData] = useState('');
+  const [data, setResidents] = useState('');
   
+  useEffect(() => {
+    fetchResidents();
+  }, []);
+
+  const fetchResidents = () => {
+    axios
+      .get('http://192.168.1.4:8000/api/v1/residents/residents/list')
+      .then(response => {
+        setResidents(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
+  const handleRemoveResident = async resident => {
+    try {
+      await axios.delete(`http://192.168.1.4:8000/api/v1/residents/residents/delete/${resident.id}/`);
+      fetchResidents();
+    } catch (error) {
+      console.error('Error deleting resident:', error);
+    }
+  };
 
   return (
 
