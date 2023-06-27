@@ -9,31 +9,44 @@ import { useState, useEffect } from 'react';
 
 
 const Table = () => {
-  const formData = useSelector(state => state.formData);
+  const [formData, setFormData] = useState([]);
   const navigation = useNavigation();
   const [data, setResidents] = useState('');
   
   useEffect(() => {
     fetchResidents();
+    const interval = setInterval(fetchResidents, 1000);
+
+  
+    return () => clearInterval(interval);
   }, []);
 
   const fetchResidents = () => {
     axios
       .get('https://darkrayleh.pythonanywhere.com/api/v1/residents/residents/list')
       .then(response => {
-        setResidents(response.data);
+        setFormData(response.data);
       })
       .catch(error => {
         console.error(error);
       });
   };
 
-  const handleRemoveResident = async resident => {
+  const handleRemoveResident = async (resident) => {
     try {
-      await axios.delete(`https://darkrayleh.pythonanywhere.com/api/v1/residents/residents/delete/${resident.id}/`);
-      fetchResidents();
+      const response = await axios.delete(
+        `https://darkrayleh.pythonanywhere.com/api/v1/residents/residents/delete/${resident.id}/`
+        
+      );
+      setFormData((prevResidents) =>
+        prevResidents.filter((resident) => resident.id !== resident.id)
+      );
+  
+  
+      return response.data;
     } catch (error) {
-      console.error('Error deleting resident:', error);
+      console.error("Error deleting resident:", error);
+      throw error;
     }
   };
 
@@ -134,7 +147,7 @@ const Table = () => {
             </View>
     
             
-            {formData.map((item, index) => (
+            {formData.map((resident, index) => (
 
 
             <View key={index} style={styles.tableRow}>
@@ -147,61 +160,61 @@ const Table = () => {
 
                 <TouchableOpacity style={styles.table_ni2}>
                 
-                    <Text style={styles.tableCellText}>{item.lastName}</Text>
+                    <Text style={styles.tableCellText}>{resident.lastname}</Text>
                 </TouchableOpacity>
                 
                     <TouchableOpacity style={styles.table_ni1}>
                 
-                    <Text style={styles.tableCellText}>{item.firstName}</Text>
+                    <Text style={styles.tableCellText}>{resident.firstname}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.table_ni2}>
-                    <Text style={styles.tableCellText}>{item.middleName}</Text>
+                    <Text style={styles.tableCellText}>{resident.middlename}</Text>
                     </TouchableOpacity>
                 
                     <TouchableOpacity style={styles.age_ni1}>
-                    <Text style={styles.tableCellText}>{item.age}</Text>
+                    <Text style={styles.tableCellText}>{resident.age}</Text>
                     </TouchableOpacity>
             
                 < TouchableOpacity style={styles.gender_ni1}>
-                    <Text style={styles.tableCellText}>{item.gender}</Text>
+                    <Text style={styles.tableCellText}>{resident.gender}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.table_ni2}>
-                    <Text style={styles.tableCellText}>{item.birthDate}</Text>
+                    <Text style={styles.tableCellText}>{resident.birthdate}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.table_ni2}>
-                    <Text style={styles.tableCellText}>{item.birthPlace}</Text>
+                    <Text style={styles.tableCellText}>{resident.birthplace}</Text>
                     </TouchableOpacity>
 
                     < TouchableOpacity style={styles.table_ni1}>
-                <Text style={styles.tableCellText}>{item.civilStatus}</Text>
+                <Text style={styles.tableCellText}>{resident.civilstatus}</Text>
                 </TouchableOpacity>
 
 
                     <TouchableOpacity style={styles.gender_ni1}>
-                    <Text style={styles.tableCellText}>{item.bloodType}</Text>
+                    <Text style={styles.tableCellText}>{resident.bloodtype}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.table_ni2}>
-                    <Text style={styles.tableCellText}>{item.religion}</Text>
+                    <Text style={styles.tableCellText}>{resident.religion}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.table_ni2}>
-                    <Text style={styles.tableCellText}>{item.totalH}</Text>
+                    <Text style={styles.tableCellText}>{resident.totalhouseholdmember}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.table_ni2}>
-                    <Text style={styles.tableCellText}>{item.occupation}</Text>
+                    <Text style={styles.tableCellText}>{resident.occupation}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.table_ni2}>
-                    <Text style={styles.tableCellText}>{item.nationality}</Text>
+                    <Text style={styles.tableCellText}>{resident.nationality}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.table_ni2}>
-                    <Text style={styles.tableCellText}>{item.educ}</Text>
+                    <Text style={styles.tableCellText}>{resident.educationalattainment}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={{borderrightWidth: 1,
@@ -212,19 +225,13 @@ const Table = () => {
                                         borderBottomWidth: 1,
                                         borderBottomColor: 'black' ,
                                         fontWeight: 'bold',}}>
-                    <Text style={styles.tableCellText}>{item.houseHold}</Text>
+                    <Text style={styles.tableCellText}>{resident.householdno}</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.age_ni1}
-                        onPress={() => {
-                            alert ('This feature is under construction')
-                        }}>
-                    <Image style={{width:30,
-                                height: 25,
-                                marginRight:20,
-                                resizeMode: "contain",
-                                alignSelf:'center'}} source={require('../../img/update.png')} />
-
+                    <TouchableOpacity style = {styles.delete}
+                        onPress={() => handleRemoveResident(resident)}>
+                  
+                  <Text style = {styles.button_text}>Delete</Text>
                     </TouchableOpacity>
 
             </View>
@@ -243,12 +250,7 @@ const Table = () => {
                         <Text style = {styles.button_text}>Add Resident</Text>
                         </TouchableOpacity>
                         
-                        <TouchableOpacity style = {styles.delete} 
-                        onPress={() => {
-                            alert ('Please Select an Item')
-                        }}>
-                            <Text style = {styles.button_text}>Delete</Text>
-                        </TouchableOpacity>
+                       
             </View>
    
     </SafeAreaView>

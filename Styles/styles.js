@@ -182,19 +182,17 @@ const styles = StyleSheet.create({
   delete: {
     borderWidth: 1, 
     borderColor: 'red', 
-    width: 100,
+    width: 60,
     height: 35, 
     padding: 5, 
     fontSize: 15, 
     borderRadius: 5,
     alignContent: 'center',
-    alignSelf: 'center',
     backgroundColor: 'red',
-    marginRight: 30,
-    marginLeft: 30,
+    marginLeft: -30,
+
     borderRadius: 15,
-    elevation: 7,
-    opacity: 1,
+    
   },
   button_textni:{
     fontSize: 15,
