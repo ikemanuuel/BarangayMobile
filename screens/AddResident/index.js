@@ -62,7 +62,7 @@ const Form = () => {
       };
 
       axios
-        .post('http://192.168.221.112:8000/api/v1/residents/residents/', residentInfo)
+        .post('https://darkrayleh.pythonanywhere.com/api/v1/residents/residents/', residentInfo)
         .then(response => {
           
           sethouseholdno('');

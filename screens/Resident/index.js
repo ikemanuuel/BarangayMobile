@@ -19,7 +19,7 @@ const Table = () => {
 
   const fetchResidents = () => {
     axios
-      .get('http://192.168.221.112:8000/api/v1/residents/residents/list')
+      .get('https://darkrayleh.pythonanywhere.com/api/v1/residents/residents/list')
       .then(response => {
         setResidents(response.data);
       })
@@ -30,7 +30,7 @@ const Table = () => {
 
   const handleRemoveResident = async resident => {
     try {
-      await axios.delete(`http://192.168.221.112:8000/api/v1/residents/residents/delete/${resident.id}/`);
+      await axios.delete(`https://darkrayleh.pythonanywhere.com/api/v1/residents/residents/delete/${resident.id}/`);
       fetchResidents();
     } catch (error) {
       console.error('Error deleting resident:', error);
